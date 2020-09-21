@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>L2P Controls</title>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons,sap.ui.comp,sap.ui.core"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		
+		<script>
+			jQuery.sap.require("sap.ui.core.util.Export");
+			jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
+				 var cellId = null;
+			     var cellObj = null;
+			     var cellVal = null;
+			     var headerColId = null;
+			     var headerColObj = null;
+			     var headerColVal = null;
+			     var column = null;
+			     var json = {}; var colArray = []; var itemsArray = [];
+			     
+			     var cols = { colsList : [ { Header : "No.1"},
+			                               { Header : "No.2"}]
+			     };
+			     
+			     var datas = { datasList : [ { No1 : "1" , No2 : "2"},
+			                                 { No1 : "3" , No2 :"4"},
+			                                 { No1 : "5" , No2 :"6"},
+			                                 { No1 : "7" , No2 :"8"},
+			                                 { No1 : "9" , No2 :"10"},
+			                                 { No1 : "11" , No2 :"12"},]
+			     };
+ 			     var oModel = new sap.ui.model.json.JSONModel();
+ 			    oModel.setData(datas);
+			    var Update = function(){
+			    	itemsArray = [];
+			    	 // Header 
+			    	 for(var i = 0 ; i < cols.colsList.length; i++){
+		    		    colArray = []; 
+		                json={name: cols.colsList[i].Header};
+		                colArray.push(json);
+		                itemsArray.push(colArray); 
+		             }
+			    	 // Item
+			    	 for(var i=0; i<datas.datasList.length;i++){
+	                	colArray = [];
+	                	for(var j=1; j<=cols.colsList.length; j++){
+	                		var val = eval("datas.datasList[i].No" + j);
+                			if(j == 1){
+	                			json={ name:  "\r" + val};
+	                		}else{
+	                			json={ name:  + val};
+	                		}
+                			colArray.push(json);
+	                	}
+	                	itemsArray.push(colArray);
+			        }
+// 			    	 // Item
+// 			    	 for(var j=0; j<datas.datasList.length;j++){
+// 	                	colArray = [];
+// 	                	json={ name:  "\r" + datas.datasList[j].No1};
+// 	               		colArray.push(json);
+// 	               		json={ name:  datas.datasList[j].No2};
+// 	               		colArray.push(json);
+// 				        itemsArray.push(colArray);
+// 			        }
+					//export json array to csv file
+			          var oExport = new sap.ui.core.util.Export({
+			                // Type that will be used to generate the content. Own ExportType's can be created to support other formats
+			                exportType: new sap.ui.core.util.ExportTypeCSV({
+			                    separatorChar: ","
+			                }),
+			                // Pass in the model created above
+			                models: oModel,
+			                // binding information for the rows aggregation
+			                rows: {
+			                    path: "/"
+			                },
+			                // column definitions with column name and binding info for the content
+			                columns: [itemsArray]
+			            });
+			          
+		           oExport.saveFile().always(function() {
+		                this.destroy();
+		            });
+				};
+			    
+			    
+		</script>
+
+	</head>
+	<body class="sapUiBody">
+		<!-- <div id="content" style="width:500px;height:100px; padding-left:30px;"></div>  -->
+		<div style="height:100px; padding-left:30px;" id="content"></div>
+		<div style="height:100px; cursor:pointer;" onClick="Update()" >1
+		</div>	
+	</body>
+	
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>Drag & Drop</title>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+		
+		<style>
+			.Column {
+				padding:3px; 
+				border:1px solid gray;
+				background-color:#DDDDDD;
+				margin-bottom : 5px;
+				cursor:move;
+				font-size:13px;
+				width : auto;
+			}
+			
+			.HeaderColumn {
+				padding:3px; 
+				border:1px solid gray;
+				background-color:#DDDDDD;
+				margin-left : 5px;
+				cursor:move;
+				width : auto;
+				float :left;
+				font-size:13px;
+			}
+		</style>
+		<script>
+			var dragStart = function( event ) {
+				event.dataTransfer.setData("Text", event.target.id);
+	      	};
+	      	
+	      	var dragging = function( event ) {
+				
+	      	};
+	      	
+			var allowDrop = function( event ) {
+				event.preventDefault();
+	      	};
+	      	
+			var drop1 = function( event ) {
+				 event.preventDefault();
+				 var data = event.dataTransfer.getData("Text");
+				 event.target.appendChild(document.getElementById(data));
+				 
+// 				 var t = $("#" + data + " > span").html();
+// 				 var w = (t.length * 13) + 4;
+				 
+				 $("#" + data).addClass("HeaderColumn");
+				 $("#" + data).removeClass("Column");
+// 				 $("#" + data).css("width", "auto"); // w + "px" );
+	      	};
+	      	
+	      	var drop2 = function( event ) {
+				 event.preventDefault();
+				 var data = event.dataTransfer.getData("Text");
+				 console.log(data);
+				 event.target.appendChild(document.getElementById(data));
+				 
+				 $("#" + data).addClass("Column");
+				 $("#" + data).removeClass("HeaderColumn");
+	      	};
+	      	
+			var load = function() {
+// 				$( ".column" ).ondragstart = function(event) {
+// 					dragStart(event);
+// 				};
+				
+// 				$( ".column" ).ondrag = function(event) {
+// 					dragging(event);
+// 				};
+				
+// 				$( "#tableheader" ).ondrop = function(event) {
+// 					drop(event);
+// 				};
+				
+// 				$( "#tableheader" ).ondragover = function(event) {
+// 					allowDrop(event);
+// 				};
+				
+			};
+		</script>
+
+	</head>
+	<body id="body" class="sapUiBody" onload="load()">
+		<div id="ColumnList" ondrop="drop2(event)" ondragover="allowDrop(event)" style="width:200px;float:left;border:1px solid blue;height:400px;padding:5px;">
+			<div id="column1" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>성명</span></div>
+			<div id="column2" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>사번</span></div>
+			<div id="column3" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>부서</span></div>
+			<div id="column4" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>직위</span></div>			
+			<div id="column5" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>직책</span></div>
+			<div id="column6" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>직급</span></div>
+			<div id="column7" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>근무지</span></div>
+			<div id="column8" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>전화번호</span></div>
+			<div id="column9" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>휴대폰 AA</span></div>
+			<div id="column10" draggable="true" ondragstart="dragStart(event)" ondrag="dragging(event)" class="Column"><span>주소</span></div>
+		</div>
+			
+		<div style="width:30px;height:400px;float:left"> </div>	
+		
+		<div id="tableheader" ondrop="drop1(event)" ondragover="allowDrop(event)" style="width:700px; height:100px; float:left;border:1px solid red;padding:5px;">
+		
+		</div>
+	</body>
+	
+</html>

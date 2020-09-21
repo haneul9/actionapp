@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>L2P Controls</title>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_belize"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		
+		<script>
+				jQuery.sap.registerModulePath("control", "/sap/bc/ui5_ui5/sap/zhrxx_common/control");
+				
+				jQuery.sap.require("control.L2PNavBar");
+				jQuery.sap.require("control.L2PSwitch");
+				jQuery.sap.require("control.L2PInput");
+				jQuery.sap.require("control.L2PProgress");
+				jQuery.sap.require("control.L2PSlider");
+				
+				var oTable = null;
+				try {
+					var vItems = [];
+					for(var i=1; i<=24; i++) {
+						vItems.push({id: "itemid" + (i), text : "Menu " + (i)});
+					}
+					oTable = new control.L2PNavBar("L2PNavBar01", {
+						cssPath: "/sap/bc/ui5_ui5/sap/zhrxx_common/css/",
+						width : "100%",
+						items : vItems,
+						selectedItem : vItems[5],
+						select : function(oEvent) {
+							alert("MenuId is " + oEvent.getParameter("itemid"));
+						}
+					});
+				} catch(ex) {
+					console.log(ex);
+				}
+				
+				oTable.placeAt("content");
+				
+				var oSwitch = new control.L2PSwitch({
+					cssPath: "/sap/bc/ui5_ui5/sap/zhrxx_common/css/",
+				});
+				oSwitch.placeAt("content1");
+				
+				var oInput = new control.L2PInput({
+					width : "300px",
+					placeholder : "input your first name....",
+					value : "input your first name....",
+					search : true,
+					showHelp : true,
+					editable : true,
+					liveChange : function(oEvent) {
+						
+					},
+					valueHelpRequest : function(oEvent) {
+						alert("Help !!!");
+					}
+				});
+				oInput.placeAt("content2");
+				
+				var oProgress = new control.L2PProgress({
+					width : "300px",
+					value : 50,
+					displayValue : "",
+					displayLabel : true,
+				});
+				oProgress.placeAt("content3");
+				
+				var oSlider = new control.L2PSlider({
+					width : "300px",
+					//value : 33,
+					range: true,
+					values : [24, 75],
+					sliding : function(oEvent) {
+						console.log(oEvent.getParameter("value"));
+						console.log(oEvent.getParameter("values"));
+					}
+				});
+				oSlider.placeAt("content4");
+				
+				var getState = function() {
+					//oInput.setEditable(false);
+					oProgress.setValue(100);
+					oProgress.setDisplayLabel(true);
+				};
+				
+				var getState2 = function() {
+					//oInput.setEditable(true);
+					oProgress.setValue(33);
+					oProgress.setDisplayLabel(false);
+				};
+		</script>
+
+	</head>
+	<body class="sapUiBody">
+		<div>Navigation Bar : </div>
+		<div id="content" style="width:500px;height:100px; padding-left:30px;"></div>
+		<div>Switch : </div>	
+		<div style="height:100px; padding-left:30px;" id="content1"></div>
+		<div>Input : </div>	
+		<div style="height:100px; padding-left:30px;" id="content2"></div>
+		<div>Progress : </div> 
+		<div style="height:100px; padding-left:30px;" id="content3"></div>
+		
+		<div>Slider : </div> 
+		<div style="height:100px; padding-left:30px;" id="content4"></div>
+		
+		<div style="height:100px">
+			<button value="Test1" onClick="getState()">Test1</button>
+			<button value="Test2" onClick="getState2()">Test2</button>
+		</div>	
+	</body>
+	
+</html>

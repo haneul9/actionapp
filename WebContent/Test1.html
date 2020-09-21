@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title></title>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons,sap.ui.core, sap.suite.ui.commons,sap.ui.ux3, 
+								  sap.ui.unified, sap.ui.layout, sap.ui.comp, sap.ca.ui, sap.ui.table"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+
+		<script>
+				jQuery.sap.registerModulePath("control", "/sap/bc/ui5_ui5/sap/zhrxx_common/control");
+				jQuery.sap.require("control.CapaPersonCard");
+				jQuery.sap.require("control.BusyIndicator");
+				
+				jQuery.sap.includeStyleSheet("/sap/bc/ui5_ui5/sap/zhrxx_common/css/L2PCard.css");
+				
+				var oCard = new control.CapaPersonCard({
+					name : "홍길동",
+					organization : "인사운영팀",
+					sabun : "20140001",
+					jobTitle : "팀장",
+					jobPosition : "S3"
+				})
+				
+				var openDialog = function() {
+					var BusyDialog = new sap.m.Dialog({showHeader : false}); 
+					BusyDialog.addContent(new control.BusyIndicator({text : "처리중입니다. 잠시만 기다려 주세요. 처리중입니다. 잠시만 기다려 주세요. 처리중입니다. 잠시만 기다려 주세요."}));
+					BusyDialog.open();
+				};
+				
+				oCard.placeAt("content");
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+		<button value="Test" text="Test "onClick="openDialog()">
+		
+		<div id="HelpOverlayBackLayout" class="L2POverlayBackLayout"></div>
+		<div id="HelpOvrelay" class="L2POverlay">
+			<div id="HelpOvrelay-close" class="close"></div>
+			<div id="HelpOvrelay-inner" class="inner"></div>
+		</div>
+	</body>
+	
+</html>

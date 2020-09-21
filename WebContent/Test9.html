@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>Drag & Drop</title>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+		
+		<style>
+			.tdclass {
+				background-color : #eeeeee;
+				color : #000000;
+				border-bottom : 1px solid red;
+				width : 100px;
+				text-align: center;
+				cursor : pointer;
+			}
+			
+			.data {
+				background-color : #ffffff;
+				color : #000000;
+				width : 100px;
+			}
+			
+			.data_td {
+				border-bottom : 1px solid #eeeeee;
+				text-align: center;
+			}
+			
+			.tdclass1 {
+				background-color : #eeeeee;
+				border-right : 1px solid blue;
+				border-bottom : 1px solid red;
+				width : 3px;
+				cursor : e-resize;
+			}
+			
+			.data_div {
+				background-color : #ffffff;
+				
+			}
+			
+			.data_div_td {
+				border-right : 1px solid #eeeeee;
+				border-bottom : 1px solid #eeeeee;
+				width : 3px;
+			}
+		</style>
+		<script>
+			var darg_id = "";
+			var drag_x = -1;
+			
+			var allowDrop = function( event ) {
+				event.preventDefault();
+	      	};
+	      	
+	      	var drop2 = function( event ) {
+				event.preventDefault();
+				
+ 				vMoveX = event.originalEvent.x - drag_x;
+ 				
+ 				var columnid = drag_id.replace("_div", "");
+ 				var dataid = columnid.replace("column", "data");
+				
+				var old_w = $("#" + columnid).width();
+				var new_w = old_w + vMoveX;
+				$("#" + columnid).css("width", new_w + "px");
+				$("#" + dataid).css("width", new_w + "px");
+	      	};
+	      	
+	      	var dragStart = function( event ) {
+				drag_id = event.target.id;
+				drag_x = event.originalEvent.x;
+	      	};
+	      	
+	      	function getRandomInt(min, max) {
+		    	return Math.floor(Math.random() * (max - min)) + min;
+		    }
+	      	
+	      	var columns = [{id : "col1", label : "항목1", type : "checkbox", width : 100, align : "center", style : "font-size:13px;"},
+	      	               {id : "col12", label : "항목2", type : "link", width : 150, align : "left", style : "font-size:13px;"},
+	      	               {id : "col3", label : "항목3", type : "string", width : 380, align : "left", style : "font-size:13px;"},
+	      	         	   {id : "col14", label : "항목4", type : "int", align : "right", style : "font-size:13px;"},
+	      	       		   {id : "col5", label : "항목5", type : "date", width : 100, align : "center", style : "font-size:13px;"},
+	      	       		   {id : "col16", label : "항목6", type : "time", align : "center", style : "font-size:13px;"},
+	      	       		   {id : "col7", label : "항목7", type : "string", align : "center", style : "font-size:13px;"}];
+	      	
+	      	var datas = [];
+	      	for(var i=0; i<500; i++) {
+	      		var onedata = {};
+	      		for(var j=0; j<columns.length; j++) {
+	      			if(columns[j].type == "string" || columns[j].type == "link") {
+	      				eval("onedata." + columns[j].id + " = 'Data " + (i+1) + " " + (j+1) + "';");	
+	      			} else if(columns[j].type == "checkbox") {
+	      				eval("onedata." + columns[j].id + " = false;");	
+	      			} else if(columns[j].type == "int") {
+	      				eval("onedata." + columns[j].id + " = " + getRandomInt(-10, 11) + ";");	
+	      			} else if(columns[j].type == "date" || columns[j].type == "time" || columns[j].type == "datetime") {
+	      				var t1 = getRandomInt(1, 32);
+	      				var d1 = new Date();
+	      				
+	      				eval("onedata." + columns[j].id + " = d1.setDate(t1);");	
+	      			}
+	      			
+	      		}
+	      		datas.push(onedata);
+	      	}
+	      	
+	      	var load = function() { 
+
+	      	}
+	      	
+	      	jQuery.sap.registerModulePath("control", "/sap/bc/ui5_ui5/sap/zhrxx_common/control");
+			
+			jQuery.sap.require("control.L2PTable");
+			
+			var oTable = new control.L2PTable("L2PTable1", {
+				width : "900px",
+				height : "460px",
+				paging : true,
+				pagesize : 10,
+				headerHeight : 50,
+				dataHeight : 30,
+				columns : columns,
+				fixedcol : 0,
+				//dateFormat : "MM.dd.yyyy",
+				loading : function(r, c, v) {
+					if(c == 3) {						
+						var o1 = $("#L2PTable1" + "_inner-TableDataTd-row" + (r) + "-col" + (c));
+						if(v < 0) oTable.setCellStyle(r, c, {"color": "red", "font_weight": "bold"});
+						else oTable.setCellStyle(r, c, {"color": "blue"});	
+					}
+				},
+				linkSelect : function(oEvent) {
+					alert("Link Data : " + oEvent.getParameter("row") + ", " + oEvent.getParameter("colid") + ", " + oEvent.getParameter("value"));
+				}
+			});
+			
+			oTable.placeAt("content");
+			
+			
+			var setData = function() {
+				oTable.loadData(datas);	
+			};
+			
+			setTimeout(setData, 300);
+			
+			var test = function( event ) {
+				console.log("data : " + oTable.getCheckedRow(0));
+	      	};
+			
+		</script>
+
+	</head>
+	<body id="body" class="sapUiBody" onload="load()">
+		<div style="height:100px;">
+			<p>Table Test</p>
+			<button onclick="test();">Test</button>
+		</div>
+		<div id="content"></div>
+	</body>
+	
+</html>

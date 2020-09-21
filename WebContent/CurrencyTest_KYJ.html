@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>L2P Controls</title>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons,sap.ui.comp"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		
+		<script>
+				jQuery.sap.registerModulePath("control", "/sap/bc/ui5_ui5/sap/zhrxx_common/control");
+				
+				jQuery.sap.require("control.L2PNavBar");
+				jQuery.sap.require("control.L2PSwitch");
+				jQuery.sap.require("control.L2PInput");
+				jQuery.sap.require("control.L2PProgress");
+				jQuery.sap.require("control.L2PSlider");
+				
+				var oTable = null;
+				
+				var sServiceURL1 = "/sap/opu/odata/sap/ZHRXX_ACTIONAPP_SRV/";
+		        var oModel = new sap.ui.model.odata.ODataModel(sServiceURL1, true, undefined, undefined, undefined, undefined, undefined, false);
+		        var oJsonModel = new sap.ui.model.json.JSONModel(); 
+		        var vJsonData = {JsonDataSet : []};
+		        
+// 		        var sServiceURL4 = this.getUrl("/sap/opu/odata/sap/YPROJECT_STANDARD_SRV/");
+// 				var oModel4 = new sap.ui.model.odata.ODataModel(sServiceURL4, true, undefined, undefined, undefined, undefined, undefined, false);
+// 				oModel4.setCountSupported(false);
+// 				sap.ui.getCore().setModel(oModel4,"YPROJECT_STANDARD_SRV");
+				
+				
+	    
+// 		        try {
+// 					oModel.read("/SchoolCodeSet/?$filter=Slart%20eq%20%27Z4%27", 
+// 							null, 
+// 							null, 
+// 							false, 
+// 							function(oData, oResponse) {					
+// 								if(oData.results && oData.results.length) {
+// 									for(var i=0; i<oData.results.length; i++) {
+// 										vJsonData.JsonDataSet.push(oData.results[i]);
+// 									}
+// 								}
+// 							},
+// 							function(oResponse) {
+// 								common.Common.log(oResponse);
+// 							}
+// 					);
+// 				} catch(ex) {
+// 					common.Common.log(ex);
+// 				}
+				
+// 				oJsonModel.setData(vJsonData);
+				
+// 				var oStandardList = new sap.m.StandardListItem({
+// 					title : "{Insti}",
+// 					description : "{Slandtx}",
+// 					info : "{Slarttx}"
+// 				});
+				
+				
+		       
+			    var oInput = new sap.m.Input({  
+			      	 width : "300px",  
+			      	 showSuggestion : true,
+			      	 type : "Text",
+				     suggestionItems :  {  
+ 				    	 path : "/SchoolCodeSet/?$filter=Slart%20eq%20%27Z4%27", 
+		                // path : "/SchoolCodeSet?$skip=0&$top=300&$inlinecount=allpages&$filter=Slart%20eq%20%27Z4%27",
+ 				     	 template : new sap.ui.core.Item({
+				     		 		key : "{Schcd}",
+		 							text : "{Insti}"
+		 						})
+ 				      },
+ 				     suggestionItemSelected : function(oEvent){
+ 				    	 this.oPath = oEvent.mParameters.selectedItem.mBindingInfos.key.binding.oContext.sPath;  
+ 				    	 var aContexts = oEvent.getParameter("selectedItem");
+ 				    	 console.log(this.oPath);
+ 				    	 console.log(aContexts);
+ 				    	 console.log(aContexts.getKey());
+ 				    	 console.log(aContexts.getText());
+ 				    	 oInput2.setValue(aContexts.getText());
+ 				    	 //this.getView().oModelSelect.bindItems(this.oPath + "/GetVehicleModelSet", this.getView().modelItemTemplate);  
+ 				    	 
+ 				     }
+			    
+			    }).setModel(oModel); 
+			    
+// 			    var oFilters = [];
+// 			    oFilters.push(new sap.ui.model.Filter("Slart", sap.ui.model.FilterOperator.EQ, "Z4"));
+// 			    oFilters.push(new sap.ui.model.Filter("Insti", sap.ui.model.FilterOperator.EQ, sValue));
+			    
+// 			    var oBinding = oEvent.getSource().getBinding("items");
+// 			    oBinding.filter(oFilters);
+
+		    
+			    var oInput2 = new sap.m.Input({  
+			      	 width : "300px",  
+			     });
+			    
+// 			    var oInput = new sap.m.Input({  
+// 			      	 width : "300px",  
+// 			      	 showSuggestion : true,
+// 			      	 type : "Text",
+// 				     suggestionItems :  {  
+// 				    	path : "/JsonDataSet",
+// 				     	 template : new sap.ui.core.Item({
+// 				     		 		key : "{Schcd}",
+// 		 							text : "{Insti}"
+// 		 						})
+// 				      },
+// 				      suggestionItemSelected  : function(oEvent){
+// 				    	  oInput2.getValue(
+// 				      }
+			    
+// 			    }).setModel(oJsonModel);
+			    
+			    oInput.setFilterFunction(function(sTerm, oItem) {
+					// A case-insensitive 'string contains' style filter
+					console.log(sTerm);
+					console.log(oItem.getText());
+					return oItem.getText().match(new RegExp(sTerm, "i"));
+				});
+				
+			    oInput.placeAt("content2");
+	
+			    oInput2.placeAt("content3");
+			    
+			    
+		</script>
+
+	</head>
+	<body class="sapUiBody">
+		<!-- <div id="content" style="width:500px;height:100px; padding-left:30px;"></div>  -->
+		<div>Product : </div>	
+		<div style="height:100px; padding-left:30px;" id="content2"></div>
+		<div>선택값: </div> 
+		<div style="height:100px; padding-left:30px;" id="content3"></div>
+<!-- 		<div style="height:100px"> -->
+<!-- 			<button value="Test1" onClick="Update()">저장</button> -->
+<!-- 			<button value="Test2" onClick="Read()">조회</button> -->
+<!-- 		</div>	 -->
+	</body>
+	
+</html>

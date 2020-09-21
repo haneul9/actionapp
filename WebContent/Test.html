@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>Tree Table</title>
+		
+		<link rel="stylesheet" type="text/css" href="/sap/bc/ui5_ui5/sap/zhrxx_common/css/dhtmlxtree.css" />		
+		<script type="text/javascript" src="/sap/bc/ui5_ui5/sap/zhrxx_common/plugin/dhtmlxtree.js"></script>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons,sap.ui.core, sap.suite.ui.commons,sap.ui.ux3, 
+								  sap.ui.unified, sap.ui.layout, sap.ui.comp, sap.ca.ui, sap.ui.table"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+
+		<script>
+				jQuery.sap.registerModulePath("control", "/sap/bc/ui5_ui5/sap/zhrxx_common/control");
+				jQuery.sap.registerModulePath("plugin", "/sap/bc/ui5_ui5/sap/zhrxx_common/plugin");
+				jQuery.sap.require("control.L2PTreeTable");
+				
+				console.log("AA : " + jQuery.sap.endsWithIgnoreCase("ABCDE", "e"));
+				
+				var vData = [];
+				vData.push({nodeid : "0001", parentid : "0000", level : 1, data : {"SectNm" : "부문1","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"}});
+				vData.push({nodeid : "0002", parentid : "0000", level : 1, data : {"SectNm" : "부문2","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"}});
+				vData.push({nodeid : "0011", parentid : "0001", level : 2, data : {"SectNm" : "부문11","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"}});
+				vData.push({nodeid : "0021", parentid : "0002", level : 2, data : {"SectNm" : "부문21","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"}});
+				
+				var oTable = null;
+				
+				try {
+					oTable = new control.L2PTreeTable("L2PTreeTable01", {
+						width : (window.innerWidth - 30) + "px",
+						height : (300) + "px",
+						cssPath : "/sap/bc/ui5_ui5/sap/zhrxx_common/css/",
+						itemWidth : "200px",
+						header : ["부문", "임원",   "간부", "#CSPAN",  "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN",  "#CSPAN", "#CSPAN", "#CSPAN", "사원", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "정직원사원계", "일용", "#CSPAN", "#CSPAN", "#CSPAN", "#CSPAN", "총계"],
+						columnIds :   ["SectNm","Total01","Cnt0201","Cnt0202","Cnt0203","Cnt0204","Cnt0205","Cnt0206","Cnt0207","Cnt0208","Total02","Cnt0301","Cnt0302","Cnt0303","Cnt0304","Cnt0305","Cnt0306","Cnt0307","Cnt0308","Cnt0309","Cnt0310","Cnt0311","Cnt0312","Cnt0313","Cnt0314","Total03","Total04","Cnt0501","Cnt0502","Cnt0503","Cnt0504","Total05","Total06"], 
+						columnTypes : ["TreeItem","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number"],
+						subHeader : [["#RSPAN", "#RSPAN", "부장M3", "#CSPAN", "차장M2", "#CSPAN", "과장", "#CSPAN", "과장(보)", "#CSPAN", "소계", "S(대리)", "#CSPAN", "S(3급)", "#CSPAN", "J(4급)", "#CSPAN", "J(5급)", "#CSPAN", "5급을", "#CSPAN", "기사", "취사", "촉탁", "#CSPAN", "소계", "#RSPAN", "영업", "창고", "판매", "기간제", "소계", "#RSPAN"],
+						             ["#RSPAN", "#RSPAN", "남",    "여",      "남",    "여",      "남",   "여",     "남",      "여",      "#RSPAN", "남", "여", "남", "여", "남", "여", "남", "여", "남", "여", "#RSPAN", "#RSPAN", "남", "여", "#RSPAN", "#RSPAN", "#RSPAN", "#RSPAN", "#RSPAN", "#RSPAN", "#RSPAN", "#RSPAN"]],
+						//columnWidths : ["150px"]
+						select : function(oEvent) {
+							var oTree = sap.ui.getCore().byId("L2PTreeTable01");
+							var vNodeId = oEvent.getParameter("nodeid");
+							if(!oTree.hasChildNode(vNodeId)) {
+								oTree.addData("0111", vNodeId, 3, {"SectNm" : "부문111","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+								oTree.addData("0112", vNodeId, 3, {"SectNm" : "부문112","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+								oTree.addData("0113", vNodeId, 3, {"SectNm" : "부문113","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+								oTree.addData("0114", vNodeId, 3, {"SectNm" : "부문114","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+								oTree.addData("0115", vNodeId, 3, {"SectNm" : "부문115","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+								oTree.addData("0116", vNodeId, 3, {"SectNm" : "부문116","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+								oTree.addData("0117", vNodeId, 3, {"SectNm" : "부문117","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+								oTree.addData("0118", vNodeId, 3, {"SectNm" : "부문118","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});	
+							}
+							console.log("BBBB " + oEvent.getParameter("nodeid"));
+						},
+						dataSelect : function(oEvent) {
+							console.log("CCCC " + oEvent.getParameter("nodeid") + ", " +  oEvent.getParameter("fieldid")+ ", " +  oEvent.getParameter("level"));
+						},
+						//data : vData				
+					});
+				} catch(ex) {
+					console.log(ex);
+				}
+				
+				
+				var oLayout = new sap.ui.commons.layout.VerticalLayout({
+					width : "100%",
+					content : oTable 
+				});
+				
+				oTable.placeAt("content");
+				
+				$( window ).resize(function() {
+					resize();	
+				});
+				
+				function resize() {
+					var oTable1 = sap.ui.getCore().byId("L2PTreeTable01");
+		        	oTable1.reSize((window.innerWidth - 30), (window.innerHeight - 100));
+				}
+				
+				$( document ).ready( function() {
+					oTable.addData("0001", "0000", 1, {"SectNm" : "부문1","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0002", "0000", 1, {"SectNm" : "부문1","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0011", "0001", 2, {"SectNm" : "부문11","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0021", "0002", 2, {"SectNm" : "부문21","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+				} );
+				
+				function removeData() {
+					//oTable.removeData();
+					oTable.closeAllNode();
+				}
+				
+				function addData() {
+					oTable.addData("0001", "0000", 1, {"Text" : "부문1","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0002", "0000", 1, {"Text" : "부문1","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0011", "0001", 2, {"Text" : "부문11","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0021", "0002", 2, {"Text" : "부문21","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+				}
+				
+				
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+		
+		<div id="HelpOverlayBackLayout" class="L2POverlayBackLayout"></div>
+		<div id="HelpOvrelay" class="L2POverlay">
+			<div id="HelpOvrelay-close" class="close"></div>
+			<div id="HelpOvrelay-inner" class="inner"></div>
+		</div>
+		<div><input type="button" value="Remove Data" onClick="removeData()"></div>
+		<div><input type="button" value="Add Data" onClick="addData()"></div>
+		
+	</body>
+	
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>Tree</title>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons,sap.ui.core, sap.suite.ui.commons,sap.ui.ux3, 
+								  sap.ui.unified, sap.ui.layout, sap.ui.comp, sap.ca.ui, sap.ui.table"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+
+		<script>
+				jQuery.sap.registerModulePath("control", "/sap/bc/ui5_ui5/sap/zhrxx_common/control");
+				jQuery.sap.registerModulePath("plugin", "/sap/bc/ui5_ui5/sap/zhrxx_common/plugin");
+				
+				jQuery.sap.require("control.L2PTree");
+				jQuery.sap.require("control.L2PLinkList");
+				
+				var oTable = null;
+				var oLinkList = null;
+				try {
+					oTable = new control.L2PTree("L2PTree01", {
+						width : "300px",
+						height : "400px",
+						//dataHeight : "40px",
+						//checked : "checkbox", //"radio",
+						cssPath : "/sap/bc/ui5_ui5/sap/zhrxx_common/css/",
+						select : function(oEvent) {
+							var oTree = sap.ui.getCore().byId("L2PTree01");
+							var vNodeId = oEvent.getParameter("nodeid");
+							if(!oTree.hasChildNode(vNodeId)) {
+								for(var i=0; i<500; i++) {
+									oTable.addData(vNodeId + "_BBB_" + (i+1), vNodeId, "부문" + (i+1) );
+								}
+							}
+						},
+						dblclick : function(oEvent) {
+							var vNodeId = oEvent.getParameter("nodeid");
+							console.log("DB1 : " + vNodeId);
+						}
+					});
+					
+					oLinkList = new control.L2PLinkList("L2PLinkList01", {
+						ename : "홍길동1_12345678,홍길동2_12345678,홍길동3_12345678,홍길동4_12345678,홍길동5_12345678,"
+						//ename : "4"
+					});
+				} catch(ex) {
+					console.log(ex);
+				}
+				
+				oTable.placeAt("content");
+				//oLinkList.placeAt("content2");
+				
+				$( document ).ready( function() {
+					console.log(new Date());
+					for(var i=0; i<2000; i++) {
+						oTable.addData("AAA" + (i+1), "", "부문" + (i+1) );
+					}
+					console.log(new Date());
+// 					oTable.addData("0001", "", "부문1");
+// 					oTable.addData("0002", "", "부문2");
+// 					oTable.addData("0011", "0001", "부문11");
+// 					oTable.addData("0021", "0002", "부문21");
+				} );
+				
+				function removeData() {
+					//oTable.removeData();
+					var t = oTable.getCheckedNode();
+					var m = "";
+					for(var i=0; i<t.length; i++) {
+						m += t[i] + ", ";
+					}
+					console.log(m);
+					
+					oTable.closeNode("0011");
+				}
+				
+				function chowRadio (show) {
+					oTable.setCheckedShow("0011", show);
+				}
+				
+				function addData() {
+					oTable.addData("0001", "0000", 1, {"Text" : "부문1","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0002", "0000", 1, {"Text" : "부문1","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0011", "0001", 2, {"Text" : "부문11","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+					oTable.addData("0021", "0002", 2, {"Text" : "부문21","Total01" : "10", "Cnt0201" : "10", "Cnt0202" : "10", "Cnt0203" : "10", "Cnt0204" : "10", "Cnt0205" : "10", "Cnt0206" : "10", "Cnt0207" : "10", "Cnt0208" : "10", "Total02" : "10", "Cnt0301" : "10", "Cnt0302" : "10", "Cnt0303" : "10", "Cnt0304" : "10", "Cnt0305" : "10", "Cnt0306" : "10", "Cnt0307" : "10", "Cnt0308" : "10", "Cnt0309" : "10", "Cnt0310" : "10", "Cnt0311" : "10", "Cnt0312" : "10", "Cnt0313" : "10", "Cnt0314" : "10", "Total03" : "10", "Total04" : "10", "Cnt0501" : "10", "Cnt0502" : "10", "Cnt0503" : "10", "Cnt0504" : "10", "Total05" : "10", "Total06" : "10"});
+				}
+				
+				
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content" style="width:400px"></div>
+		
+		<div id="content2" style="width:400px"></div>
+		
+		<div id="HelpOverlayBackLayout" class="L2POverlayBackLayout"></div>
+		<div id="HelpOvrelay" class="L2POverlay">
+			<div id="HelpOvrelay-close" class="close"></div>
+			<div id="HelpOvrelay-inner" class="inner"></div>
+		</div>
+		<div><input type="button" value="Remove Data" onClick="removeData()"></div>
+		<div><input type="button" value="ShowRadio" onClick="chowRadio(true)"></div>
+		<div><input type="button" value="HideRadio" onClick="chowRadio(false)"></div>
+		<div><input type="button" value="Add Data" onClick="addData()"></div>
+		
+	</body>
+	
+</html>

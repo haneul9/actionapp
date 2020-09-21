@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>OData Perform</title>
+
+		<script src="resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs=""
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal">
+		</script>
+
+		<script>
+		var vConnUser = [{id : "ab02", pw : "369369ymj"},
+		                 {id : "ab06", pw : "js6235js"},
+		                 {id : "ab07", pw : "korea.com9"},]		
+		
+		var vModels = [];
+		var Process = function() {
+			try {
+				vModels = [];
+				for(var i=0; i<vConnUser.length; i++) {
+					var sServiceURL1 = $("#service_name").val(); //"/sap/opu/odata/sap/ZHRXX_COMMON_SRV/";
+					var vUser = vConnUser[i].id;
+					var vPw = vConnUser[i].pw;
+					vModels.push(new sap.ui.model.odata.ODataModel(sServiceURL1, true));
+				}
+				
+				for(var i=0; i<parseInt($("#concurrent_number").val()); i++) {
+					var oModel = vModels[(i % vConnUser.length)];
+					oModel.read($("#service_url").val(), //"/EmpCodeListSet?$filter=(Field%20eq%20%27Pjtck%27%20or%20Field%20eq%20%27Pjtun%27)%20and%20PersaNc%20eq%20%27X%27", 
+							null, 
+							null, 
+							true, 
+							function(oData, oResponse) {					
+								if(oData.results && oData.results.length) {
+									
+								}
+							},
+							function(oResponse) {
+								console.log(oResponse);
+							}
+					);	
+				}
+				
+			} catch(ex) {
+				console.log(ex);
+			}	
+		};
+		
+		
+
+		</script>
+
+	</head>
+	<body>
+		<div style="height:50px;">동시 수행수 : <input type="text" id="concurrent_number" value="20"></div>
+		<div style="height:50px;">접속 Service : <input type="text" id="service_name" size="150" value="/sap/opu/odata/sap/ZHRXX_COMMON_SRV/"></div>
+		<div style="height:50px;">접속 URL : <input type="text" id="service_url" size="200" value="/EmpLoginInfoSet"></div>
+		<div style="height:50px;"><input type="submit" value="Test" onclick="Process()"></div>
+	</body>
+</html>

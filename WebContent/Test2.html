@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title></title>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons,sap.ui.core, sap.suite.ui.commons,sap.ui.ux3, 
+								  sap.ui.unified, sap.ui.layout, sap.ui.comp, sap.ca.ui, sap.ui.table"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+
+		<script>
+				jQuery.sap.registerModulePath("control", "/sap/bc/ui5_ui5/sap/zhrxx_common/control");
+				jQuery.sap.require("sap.suite.ui.commons.GenericTile");
+				jQuery.sap.require("control.L2PFeedContainer");
+				
+				var oNew1 = new sap.suite.ui.commons.TileContent({
+					footer : "2015.04.16 12:33:33",
+					content : new sap.suite.ui.commons.NewsContent({
+						contentText : "[오늘의 NBA] (4/16) 앤써니 데이비스, 플레이오프 출사표를 던지다!",
+						subheader : "인사운영팀"
+					})
+				});
+				
+				var oNew2 = new sap.suite.ui.commons.TileContent({
+					footer : "2015.04.16 14:22:43",
+					content : new sap.suite.ui.commons.NewsContent({
+						contentText : "[이영미 人터뷰] KGC 전창진 감독이 ‘이제야’ 꺼내놓는 이야기 ",
+						subheader : "HR T/F팀"
+					})
+				});
+				
+				var idx = 1;
+				var vImages = ["images/photo1.jpg"]; //, "images/bg.jpg"];
+				var vNews = [oNew1, oNew2];
+				var vNewTexts = ["[오늘의 NBA] (4/16) 앤써니 데이비스, 플레이프 출사표를 던지다! 플레이프 출사표를 던지다!", "[이영미 人터뷰] KGC 전창진 감독이 ‘이제야’ 꺼내놓는 이야기"];
+				var vWriters = ["인사운영팀", "HR T/F팀"];
+				var vDates = ["2015.04.16 12:33:33", "2015.04.16 14:22:43"];
+				
+				var oGenericTile = new sap.suite.ui.commons.GenericTile({
+					size : "L", 
+					frameType: "TwoByOne",
+					backgroundImage : vImages[0],
+					tileContent : oNew1
+				});
+				
+				//oGenericTile.placeAt("content");
+				
+				var oFeedContailer = new control.L2PFeedContainer({
+					images : vImages,
+					news : vNewTexts,
+					writers : vWriters,
+					dates : vDates,
+					cssPath : "css/"
+				});
+				oFeedContailer.placeAt("content1");
+				
+				var onChange = function() {
+					oGenericTile.setBackgroundImage(vImages[(idx % 2)]);
+					oGenericTile.removeAllTileContent();
+					oGenericTile.destroyTileContent();
+					oGenericTile.addTileContent(vNews[(idx % 2)]);
+					idx++;
+					setTimeout(onChange, 3000);
+				}
+				
+				var Onload = function() {
+					//setTimeout(onChange, 3000);
+				}
+				
+				
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application" onload="Onload()">
+		<div id="content"></div>
+		
+		<div id="content1"></div>
+		
+		<div id="HelpOverlayBackLayout" class="L2POverlayBackLayout"></div>
+		<div id="HelpOvrelay" class="L2POverlay">
+			<div id="HelpOvrelay-close" class="close"></div>
+			<div id="HelpOvrelay-inner" class="inner"></div>
+		</div>
+	</body>
+	
+</html>

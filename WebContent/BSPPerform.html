@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>BSP Perform</title>
+
+		<script src="resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs=""
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal">
+		</script>
+
+		<script>
+		var Process = function() {
+			try {
+				var loop_cnt = parseInt($("#concurrent_number").val());
+				var connect_url = $("#service_url").val();
+				
+				var _handleSuccess = function(data){
+					console.log("Success Connect !!!");
+					//console.log( data.results );
+					//console.log(window.JSON.parse(data));
+				}; 
+				var _handleError = function(data){
+					console.log("Fial Connect !!!");
+					console.log(data);
+				};
+				for(var i=0; i<loop_cnt; i++) {
+					jQuery.ajax({
+						type: 'GET',
+ 						dataType: "json",
+						async : true,
+						url: connect_url,
+						success: _handleSuccess,
+						error: _handleError,
+					});	
+
+// 					$.getJSON( connect_url, function( json ) {
+// 						  console.log( json );
+// 					});
+				}
+				
+				
+			} catch(ex) {
+				console.log(ex);
+			}	
+		};
+		
+		
+
+		</script>
+
+	</head>
+	<body>
+		<div style="height:50px;">동시 수행수 : <input type="text" id="concurrent_number" value="20"></div>
+		<div style="height:50px;">접속 URL : <input type="text" id="service_url" size="200" value="http://dsghrerpd01.corp.doosan.com:8000/sap(bD1rbyZjPTMwMA==)/bc/bsp/sap/zhr_jmk/jmk.json"></div>
+		<div style="height:50px;"><input type="submit" value="Test" onclick="Process()"></div>
+	</body>
+</html>

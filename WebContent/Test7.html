@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>Drag & Drop</title>
+		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<style>
+			.Column {
+				padding:3px; 
+				border:1px solid gray;
+				background-color:#DDDDDD;
+				margin-bottom : 5px;
+				width : auto;
+				cursor:move;
+			}
+			
+			.HeaderColumn {
+				padding:3px; 
+				border:1px solid gray;
+				background-color:#DDDDDD;
+				margin-left : 5px;
+				cursor:move;
+				width : auto;
+				float :left;
+			}
+			
+			.CanvasObject {
+				padding:3px; 
+				border:1px solid gray;
+				background-color:#DDDDDD;
+				margin-left : 5px;
+				width : 50px;
+				height : 50px;
+				position :absolute;
+			}
+		</style>
+		<script>
+			var curDragId1 = "";
+			var curDragId2 = "";
+			
+			var startDrag = function(ev, ui) {
+				curDragId1 = "";
+				curDragId2 = "";
+				var cid = ev.target.id;
+				$("#" + cid).css( "z-index", "1000" );
+			};
+		
+			var cofirmDrag = function(ev, ui) {
+				var cid = ev.target.id;
+				
+				if(cid != curDragId1) {
+					$("#" + cid).css( "left", ui.originalPosition.left + "px" );
+					$("#" + cid).css( "top", ui.originalPosition.top + "px" );
+				}
+				curDragId1 = "";
+			};
+			
+			var cofirmDrag2 = function(ev, ui) {
+				var cid = ev.target.id;
+				
+				if(curDragId1 == "") {
+					if(cid != curDragId2) {
+						$("#" + cid).css( "left", ui.originalPosition.left + "px" );
+						$("#" + cid).css( "top", ui.originalPosition.top + "px" );
+					}	
+				}
+				curDragId2 = "";
+			};
+			
+			var cofirmDrop2 = function(ev, ui) {
+				var drag_id = ui.draggable[0].id;
+				var drop_id = ev.target.id;
+				
+				var drag_html = $("#" + drag_id).html();
+				$("#" + drag_id).remove();
+				
+				var headerColumn = "<div id='" + drag_id + "' class='HeaderColumn'>";
+	    		headerColumn += drag_html;
+	    		headerColumn += "</div>";
+	    		
+				$("#" + drop_id).after(headerColumn);
+				$( "#" + drag_id ).draggable({stop : cofirmDrag2, start : startDrag, axis : "x"});
+				$( "#" + drag_id ).droppable({drop : cofirmDrop2});
+			};
+			
+			var headerTable_Drop = function( event, ui ) {
+	    		var drag_id = ui.draggable[0].id;
+				var drag_html = $("#" + drag_id).html();
+				
+				curDragId1 = drag_id;
+				
+				if(drag_id.indexOf("Header") != -1) {
+
+// 		    		$( "#" + drag_id ).css("left", "0px");
+// 		    		$( "#" + drag_id ).css("top", "0px");
+					return;
+				}
+				
+	    		$("#" + ui.draggable[0].id).remove();
+	    		
+	    		var headerColumn = "<div id='Header" + drag_id + "' class='HeaderColumn'>";
+	    		headerColumn += drag_html;
+	    		headerColumn += "</div>";
+	    		
+	    		$( "#tableheader" ).append(headerColumn);
+	    		$( "#Header" + drag_id ).draggable({stop : cofirmDrag2, start : startDrag});
+	      	};
+	      	
+	      	var columnList_Drop = function( event, ui ) {
+	    		var drag_id = ui.draggable[0].id;
+				var drag_html = $("#" + drag_id).html();
+				
+				curDragId2 = drag_id;
+				
+	    		$("#" + ui.draggable[0].id).remove();
+	    		
+	    		var headerColumn = "<div id='" + drag_id.replace("Header", "") + "' class='Column'>";
+	    		headerColumn += drag_html;
+	    		headerColumn += "</div>";
+	    		
+	    		$( "#ColumnList" ).append(headerColumn);
+	    		$( "#" + drag_id.replace("Header", "") ).draggable({stop : cofirmDrag, start : startDrag});
+	      	};
+			
+			var load = function() {
+				for(var i=1; i<=10; i++) {
+					$( "#column" + i ).draggable({stop : cofirmDrag, start : startDrag});
+				}
+				
+				$( "#tableheader" ).droppable({
+			    	drop: headerTable_Drop
+				});
+				
+				$( "#tableheader" ).sortable();
+				
+// 				$( "#ColumnList" ).droppable({
+// 			    	drop: columnList_Drop
+// 				});
+				
+				$( "#ColumnList" ).sortable();
+				
+				$( "#canvas1" ).droppable({
+			    	drop: function(ev, ui) {
+			    		var drag_id = ui.draggable[0].id;
+			    		var drag_html = $("#" + drag_id).html();
+			    		
+			    		if(drag_id.indexOf("Canvas") != -1) {
+			    			return;
+			    		}
+			    		
+			    		var headerColumn = "<div id='Canvas" + drag_id + "' class='CanvasObject'>";
+			    		headerColumn += drag_html;
+			    		headerColumn += "</div>";
+			    		
+			    		$( "#canvas1" ).append(headerColumn);
+			    		
+  			    		$("#Canvas" + drag_id).css( "left", ev.clientX + "px" );
+  						$("#Canvas" + drag_id).css( "top", ev.clientY + "px" );
+  						
+  						$("#Canvas" + drag_id).draggable();
+						
+			    	}
+				});
+			};
+		</script>
+
+	</head>
+	<body id="body" class="sapUiBody" role="application" onload="load()">
+	<div style="height:450px;">
+		<div id="ColumnList" style="width:200px;float:left;border:1px solid blue;height:400px;padding:5px;">
+			<div id="column1" class="Column">성명</div>
+			<div id="column2" class="Column">사번</div>
+			<div id="column3" class="Column">부서</div>
+			<div id="column4" class="Column">직위</div>			
+			<div id="column5" class="Column">직책</div>
+			<div id="column6" class="Column">직급</div>
+			<div id="column7" class="Column">근무지</div>
+			<div id="column8" class="Column">전화번호</div>
+			<div id="column9" class="Column">휴대폰</div>
+			<div id="column10" class="Column">법적 주소 </div>
+		</div>
+			
+		<div style="width:30px;height:400px;float:left"> </div>	
+		
+		<div id="tableheader" style="width:700px; height:100px; float:left;border:1px solid red;padding:5px;">
+		
+		</div>
+	</div>	
+	<div id="canvas1" style="width:700px; height:300px;border:1px solid blue;padding:5px;">
+	
+	</div>
+	</body>
+	
+</html>

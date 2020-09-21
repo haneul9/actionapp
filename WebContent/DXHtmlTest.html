@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+		<title>DXHTML</title>
+		
+		<link rel="stylesheet" type="text/css" href="/sap/bc/ui5_ui5/sap/ZL2P01UI59000/css/dhtmlxgrid.css" />		
+		<script type="text/javascript" src="/sap/bc/ui5_ui5/sap/ZL2P01UI59000/plugin/dhtmlx.js"></script>
+		
+		<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m,sap.ui.commons,sap.ui.core, sap.suite.ui.commons,sap.ui.ux3, 
+								  sap.ui.unified, sap.ui.layout, sap.ui.comp, sap.ca.ui, sap.ui.table"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-theme=	"sap_bluecrystal"
+				data-sap-ui-appCacheBuster="./">
+		</script>
+		
+		<style>
+			.grid_hover {
+				background-color:#7FFFD4;
+				font-size:20px;
+			}
+		</style>
+
+		<script>
+		
+			var locale = sap.ui.getCore().getConfiguration().getLanguage(); //언어
+	        var oBundleText = jQuery.sap.resources({
+	        	url : "/sap/bc/ui5_ui5/sap/ZL2P01UI59000/translation/i18n.properties" , //번역파일 주소
+	        	locale : locale
+	        });
+			
+// 	        var sServiceURL1 = "/sap/opu/odata/sap/ZHRXX_ACTIONAPP_SRV/";
+// 	        var oModel = new sap.ui.model.odata.ODataModel(sServiceURL1, true);
+	        
+// 	        var vDisplayControl = [];
+// 			try {
+// 				oModel.read("/ActionDisplayFieldSet/?$filter=Docno%20eq%20%270000000227%27", 
+// 						null, 
+// 						null, 
+// 						false, 
+// 						function(oData, oResponse) {					
+// 							if(oData.results && oData.results.length) {
+// 								for(var i=0; i<oData.results.length; i++) {
+// 									vDisplayControl.push(oData.results[i]);
+// 								}
+// 							}
+// 						},
+// 						function(oResponse) {
+// 							common.Common.log(oResponse);
+// 						}
+// 				);
+// 			} catch(ex) {
+// 				common.Common.log(ex);
+// 			}
+			
+			var vColumns = [ {id : "Ename", label : oBundleText.getText("ENAME"), control : "ro", width : "150", align : "left"},
+			                 {id : "Acttx", label : oBundleText.getText("ACTTX"), control : "txt", width : "150", align : "left"},
+			                 {id : "Actda", label : oBundleText.getText("ACTDA"), control : "ro", width : "100", align : "center"},
+			                 {id : "Batyp", label : oBundleText.getText("BATYP"), control : "ro", width : "70", align : "center"},
+			                 {id : "A", label : "Header1_1", control : "ro", width : "150", align : "left"},
+			                 {id : "B", label : "Header2_1", control : "txt", width : "150", align : "left"},
+			                 {id : "C", label : "Header3_1", control : "ro", width : "100", align : "center"},
+			                 {id : "D", label : "Header4_1", control : "ro", width : "70", align : "center"},
+			               ];
+	        
+			var vColumns2 = [{id : "A2", label : "Header1_2", control : "ro", width : "150", align : "left"},
+			                 {id : "B2", label : "Header2_2", control : "txt", width : "150", align : "left"},
+			                 {id : "C2", label : "Header3_2", control : "ro", width : "100", align : "center"},
+			                 {id : "D2", label : "Header4_2", control : "ro", width : "70", align : "center"},
+              ]
+	        jQuery.sap.require("sap.ui.core.format.DateFormat");
+			
+			var oLayout = new sap.ui.commons.layout.VerticalLayout("DXHTML_GRID",  {
+				width : "100%"
+			});
+			
+			var header = "";
+			var ColVlign = "";
+			var ColAlign = "";			
+			var ColTypes = "";			
+			var ColSorting = "";			
+			var InitWidths = "";			
+			var ColumnIds = "";			
+			var Filters = "";
+						
+			var mygrid = null;
+			
+			var getUrl = function(sUrl) {
+				if (sUrl == "")
+					return sUrl;
+				if (window.location.hostname == "localhost") {
+					return "proxy" + sUrl;
+				} else {
+					return sUrl;
+				}
+			}
+			
+			var dateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({pattern: "yyyy.MM.dd"});
+			
+			var onPopup = function(rowid) {
+				var Pernr = mygrid.getUserData(rowid, "Pernr");
+				alert("Click User is " + Pernr);
+			};
+			
+			var dataLoad = function() {
+				
+				var griddata = {rows : []};
+				
+				var icon1 = "<img src='images/action1.png'>";
+				var icon2 = "<img src='images/action2.png'>";
+				var icon3 = "<img src='images/action3.png'>";
+				
+				oModel.read("ActionSubjectListSet?$filter=Docno%20eq%20%270000000227%27%20and%20Reqno%20eq%20%27HR%202015111%ED%98%B8%27", 
+						null, 
+						null, 
+						false,
+						function(oData, oResponse) {
+							if(oData && oData.results) {
+								mygrid.startFastOperations();
+								
+								for(var i=0; i<oData.results.length; i++) {
+									var oneData = [];
+									
+									oneData.push(false);
+									
+									if(oData.results[i].Cfmyn == "X") oneData.push("<table cellpadding=0 cellspacing=0 border=0 style='background-color:white'><tr><td style='border:0px'>" + icon1 + "</td><td style='padding-left:5px; border:0px'><div style='color:blue; cursor:pointer;' onclick='onPopup(" + (i+1) + ")'>" + oData.results[i].Ename + "&nbsp;&nbsp;&nbsp;</div></td></tr></table>");
+									else if(oData.results[i].Cfmyn == "E") oneData.push("<table cellpadding=0 cellspacing=0 border=0 style='background-color:white'><tr><td style='border:0px'>" + icon2 + "</td><td style='padding-left:5px; border:0px'><div style='color:blue; cursor:pointer;' onclick='onPopup(" + (i+1) + ")'>" + oData.results[i].Ename + "&nbsp;&nbsp;&nbsp;</div></td></tr></table>");
+									else if(oData.results[i].Cfmyn == "L") oneData.push("<table cellpadding=0 cellspacing=0 border=0 style='background-color:white'><tr><td style='border:0px'>" + icon3 + "</td><td style='padding-left:5px; border:0px'><div style='color:blue; cursor:pointer;' onclick='onPopup(" + (i+1) + ")'>" + oData.results[i].Ename + "&nbsp;&nbsp;&nbsp;</div></td></tr></table>");
+									else oneData.push("<table cellpadding=0 cellspacing=0 border=0 style='background-color:white'><tr><td style='border:0px'><div style='color:blue; cursor:pointer;' onclick='onPopup(" + (i+1) + ")'>" + oData.results[i].Ename + "&nbsp;&nbsp;&nbsp;</div></td></tr></table>");
+									
+									oneData.push(oData.results[i].Acttx + "&nbsp;&nbsp;&nbsp;");
+									oneData.push(dateFormat.format(new Date(oData.results[i].Actda)));
+									if(oData.results[i].Batyp == "A") oneData.push("<span style='font-size:13px; font-weight:bold; color:blue'>After</span>");
+									else oneData.push("<span style='font-size:13px; font-weight:bold; color:black'>Before</span>");
+									
+									for(var j=0; j<vDisplayControl.length; j++) {
+										var Fieldname = vDisplayControl[j].Fieldname;
+										Fieldname = Fieldname.substring(0,1) + Fieldname.substring(1).toLowerCase();
+										var TextFieldname = Fieldname + "_Tx";
+										var ChangeFieldname = Fieldname + "C";
+										
+										var fChange = eval("oData.results[i]." + ChangeFieldname + ";");
+										
+										var val = eval("oData.results[i]." + TextFieldname + ";");
+										if(oData.results[i].Batyp == "A" && fChange == "X") {
+											oneData.push("<span style='color:blue; font-weight:bold'>" + val + "&nbsp;&nbsp;&nbsp;</span>");	
+										} else {
+											oneData.push(val + "&nbsp;&nbsp;&nbsp;");	
+										}
+									}
+									
+									try {
+										if(mygrid) {
+											mygrid.addRow((i+1), oneData);
+											
+											mygrid.setUserData((i+1), "Pernr", oData.results[i].Pernr);
+										}	
+									} catch(ex) {
+										console.log(ex);
+									}
+									
+								}
+								mygrid.stopFastOperations();
+		
+								if(mygrid) {
+									for(var i=1; i<(vDisplayControl.length + 5); i++) {
+										mygrid.adjustColumnSize(i);	
+									}
+
+									for(var r=0; r<mygrid.getRowsNum(); r++) {
+										if((r % 2) == 0) {
+											mygrid.setRowspan((r+1),0,2);
+											mygrid.setRowspan((r+1),1,2);
+											mygrid.setRowspan((r+1),2,2);
+											mygrid.setRowspan((r+1),3,2);
+										}
+									}
+								}
+							}
+						},
+						function(oResponse) {
+							common.Common.log(oResponse);
+							if(oController.BusyDialog && oController.BusyDialog.isOpen()) {
+								oController.BusyDialog.close();
+							};
+						}
+				);
+			};
+			
+			
+			
+			oLayout.addDelegate({
+				onAfterRendering:function() { 
+					$("#DXHTML_GRID").css("height", window.innerHeight - 50);
+					console.log("Width : " + $("#DXHTML_GRID").width());
+					
+					mygrid = new dhtmlXGridObject('DXHTML_GRID');
+					mygrid.setImagePath("/sap/bc/ui5_ui5/sap/ZL2P01UI59000/css/imgs/dhxgrid_web/");
+					
+					header = "#master_checkbox,";
+					InitWidths = "40,";
+					ColTypes = "ch,";
+					ColAlign = "center,";
+					ColVlign = "middle,";
+					for(var i=0; i<vColumns.length; i++) {
+						header += vColumns[i].label + ",";
+						InitWidths += vColumns[i].width + ",";
+						ColTypes += vColumns[i].control + ",";
+						ColAlign += vColumns[i].align + ",";
+						ColVlign += "middle,";
+					}
+					
+					mygrid.setHeader(header);
+					mygrid.setInitWidths(InitWidths);
+					mygrid.setColAlign(ColAlign);
+					mygrid.setColVAlign(ColVlign);
+					mygrid.setColTypes(ColTypes);
+	
+					
+					
+					mygrid.init();
+					
+// 					var c_idx = 5;
+// 					for(var i=0; i<vDisplayControl.length; i++) {
+// 						var Fieldname = vDisplayControl[i].Fieldname;
+// 						Fieldname = Fieldname.substring(0,1) + Fieldname.substring(1).toLowerCase();
+// 						var TextFieldname = Fieldname + "_Tx";
+// 						var ChangeFieldname = Fieldname + "C";
+						
+// 						mygrid.insertColumn(c_idx, oBundleText.getText(vDisplayControl[i].Fieldname),'ro', "200", 'na','left','middle');
+// 						c_idx++;						
+// 					}
+					mygrid.enableSmartRendering(true);
+
+					
+					dataLoad();						
+				}
+			});
+			
+			var isChecked = function() {
+				var len = mygrid.getRowsNum();
+				var chk = 0;
+				var rowid = -1;
+				for(var i=0; i<len; i++) {
+					if(mygrid.cells2(i, 0).isChecked()) {
+						chk++;
+						rowid = (i+1);
+					}
+				}
+				if(chk != 1) {
+					alert("Invalid Checked Count : " + chk);
+					return;
+				}
+				
+				alert("Checked Pernr is " + mygrid.getUserData(rowid, "Pernr"));
+				
+			};
+				
+			oLayout.placeAt("content");
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+		<button value="" onClick="isChecked()">Button1</button>
+	</body>
+</html>
